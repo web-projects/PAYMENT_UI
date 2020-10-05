@@ -1,0 +1,43 @@
+﻿<Window x:Class="PaymentUI.Views.UIView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PaymentUI"
+        xmlns:VM="clr-namespace:PaymentUI.ViewModels"
+        mc:Ignorable="d"
+        Title="Process Payment POS" Height="450" Width="800"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <VM:UIViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="Converter" />
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" HorizontalAlignment="Left" Height="75" Margin="48,0,0,0" VerticalAlignment="Top" Width="225" Source="..\Assets\TCIPALogo.jpg" Grid.ColumnSpan="2"/>
+        <Label Grid.Row="1" Content="{Binding SessionIdTxt}" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="30,30,0,0" VerticalAlignment="Top" Width="260" FontSize="10" Grid.ColumnSpan="2"/>
+        <Label Grid.Row="2" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="30,5,0,0" VerticalAlignment="Top" Width="260" FontSize="14" FontWeight="Bold" Height="60">
+            <Label.Content>
+                <AccessText TextWrapping="Wrap" Text="{Binding MessageTxt}"/>
+            </Label.Content>
+        </Label>
+        <StackPanel Grid.Row="3" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button Name="CancelTransactionBtn" Content="{Binding ButtonTxt}" HorizontalAlignment="Left" Height="35" Margin="10,0,10,0" VerticalAlignment="Center" Width="80" Background="DarkCyan" Foreground="White" Click="CancelTransactionBtn_Click"/>
+            <Button x:Name="ManualEntryBtn" Content="Manual Entry" Visibility="{Binding Path=ShowManualEntryButton, Converter={StaticResource Converter}}" HorizontalAlignment="Left" Height="35" Margin="10,0,10,0" VerticalAlignment="Center" Width="80" Background="DarkCyan" Foreground="White" Click="ManualEntryBtn_Click"/>
+        </StackPanel>
+        <Image Grid.Row="4" HorizontalAlignment="Left" Height="31" Margin="1,0,0,5" VerticalAlignment="Bottom" Width="160" Source="..\Assets\TRC-178_Logo_New_Tagline_SecuredBy.png" Grid.ColumnSpan="2"/>
+
+    </Grid>
+</Window>

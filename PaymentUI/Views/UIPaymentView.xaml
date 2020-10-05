@@ -1,0 +1,94 @@
+﻿<Window x:Class="PaymentUI.Views.UIPaymentView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PaymentUI"
+        xmlns:VM="clr-namespace:PaymentUI.ViewModels"
+        xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
+        mc:Ignorable="d"
+        Title="Process Payment POS" Height="500" Width="800"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <VM:UIViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="Converter" />
+        <FontFamily x:Key="FontAwesome">pack://application:,,,/Resources/#fontawesome</FontFamily>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" HorizontalAlignment="Left" Height="75" Margin="48,0,0,0" VerticalAlignment="Top" Width="225" Source="..\Assets\TCIPALogo.jpg" Grid.ColumnSpan="2"/>
+        <Label Grid.Row="0" Content="Operator:" HorizontalAlignment="Left" Height="25" Margin="584,20,0,0" VerticalAlignment="Top" Width="65"/>
+        <Label Grid.Row="0" Content="john.doe" HorizontalAlignment="Left" Height="25" Margin="661,20,0,0" VerticalAlignment="Top" Width="115"/>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Background="LightGray" Width="760">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <!-- PAYMENT WORKFLOW -->
+                <RadioButton Grid.Row="0" Grid.Column="1" Content="Sale" Margin="15,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold" Foreground="Navy"></RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="1" Content="Pre-Auth" Margin="0,0,50,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" Foreground="Navy"></RadioButton>
+                <Label Grid.Row="1" Grid.Column="0" Content="Amount to be Paid" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="60,5,0,0" FontSize="14" FontWeight="Bold" Height="60" />
+                <Border Grid.Row="1" Grid.Column="1"  BorderThickness="1" BorderBrush="SkyBlue" Margin="0,5">
+                    <TextBlock x:Name="Amount" Width="400" Background="White"></TextBlock>
+                </Border>
+                <Label Grid.Row="2" Grid.Column="0" Content="Ticket" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="0,5,0,0" FontSize="14" FontWeight="Bold" Height="60" />
+                <Border Grid.Row="2" Grid.Column="1"  BorderThickness="1" BorderBrush="SkyBlue" Margin="0,5">
+                    <TextBlock x:Name="Ticket" Width="400" Background="White"></TextBlock>
+                </Border>
+                <Label Grid.Row="3" Grid.Column="0" Content="CustID" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="0,5,0,0" FontSize="14" FontWeight="Bold" Height="60" />
+                <Border Grid.Row="3" Grid.Column="1"  BorderThickness="1" BorderBrush="SkyBlue" Margin="0,5">
+                    <TextBlock x:Name="CustId" Width="400" Background="White"></TextBlock>
+                </Border>            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" Background="LightGray" Width="760">
+            <Button Name="CancelTransactionBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,100,0" VerticalAlignment="Center" Width="160" Background="Red" Foreground="White" Click="CancelTransactionBtn_Click">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="TimesCircle" Foreground="White" Margin="0,0,10,0"/>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Cancel Payment</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="ProcessRequestBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,10,0" VerticalAlignment="Center" Width="160" Background="DarkCyan" Foreground="White" Click="ManualEntryBtn_Click">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="CartArrowDown" Foreground="White" Margin="0,0,10,0"/>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Process Request</TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <Label Content="Payment History" Grid.Row="3" Grid.ColumnSpan="2" Background="#FFB8B8B8" Width="760" Foreground="White" FontSize="20" HorizontalContentAlignment ="Center" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="4" HorizontalAlignment="Center" Orientation="Horizontal" Background="LightGray" Width="760">
+            <Button Name="PrintReceiptBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,100,0" VerticalAlignment="Center" Width="160" Background="Navy" Foreground="White" Click="CancelTransactionBtn_Click">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Print" Foreground="White" Margin="0,0,10,0"/>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Print Receipt</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="VoidPaymentBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,10,0" VerticalAlignment="Center" Width="160" Background="Navy" Foreground="White" Click="ManualEntryBtn_Click">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="AngleDoubleUp" Foreground="White" Margin="0,0,10,0"/>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Void Payment</TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <Image Grid.Row="5" HorizontalAlignment="Left" Height="31" Margin="1,0,0,5" VerticalAlignment="Bottom" Width="160" Source="..\Assets\TRC-178_Logo_New_Tagline_SecuredBy.png" Grid.ColumnSpan="2"/>
+    </Grid>
+</Window>
