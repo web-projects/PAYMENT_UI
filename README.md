@@ -4,7 +4,7 @@ This an application for WPF testing.
 
 ### What is this repository for? ###
 
-* KEY_LOADER APPLICATION
+* WPF APPLICATION
 * 1.00.0.(100)
 * git remote add origin https://github.com/web-projects/PAYMENT_UI.git
 
