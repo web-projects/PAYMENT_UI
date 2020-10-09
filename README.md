@@ -1,6 +1,6 @@
 # README #
 
-This an application for WPF testing.
+This an application for WPF Dialog Testing.
 
 ### What is this repository for? ###
 
@@ -31,4 +31,5 @@ This an application for WPF testing.
 ### HISTORY ###
 
 * 20201005 - Initial repository
+* 20201008 - Button enhancement
         

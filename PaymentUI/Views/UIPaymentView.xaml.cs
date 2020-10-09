@@ -21,8 +21,12 @@ namespace PaymentUI.Views
         private int displayTimeout = 5000;
         private Timer dialogTimer = null;
 
-        public bool ManualEntrySelected { get; private set; }
-        public bool PaymentCancelled { get; private set; }
+        public System.Windows.Controls.Button ButtonPressed { get; private set; }
+
+        public bool CancelTransactionSelected { get; private set; }
+        public bool ProcessRequestSelected { get; private set; }
+        public bool PrintReceiptSelected { get; private set; }
+        public bool VoidPaymentSelected { get; private set; }
 
         public UIPaymentView()
         {
@@ -36,59 +40,102 @@ namespace PaymentUI.Views
             // Code to remove close box from window
             var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
+        }
 
-            if (dialogTimer is null)
+        void DialogTimerDispose()
+        {
+            dialogTimer?.Stop();
+            dialogTimer?.Dispose();
+            dialogTimer = null;
+        }
+
+        void Dialog_Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            DialogTimerDispose();
+
+            this.Dispatcher.Invoke((Action)delegate ()
             {
-                bool setDialogTimer = CancelTransactionBtn.Content.ToString().Equals("Cancel", StringComparison.OrdinalIgnoreCase);
+                this.Close();
+            });
+        }
 
-                if (setDialogTimer)
-                {
-                    dialogTimer = new Timer();
-                    displayTimeout = (int)this.DataContext.GetType().GetProperty("Timeout").GetValue(this.DataContext, null);
-                    dialogTimer.Interval = displayTimeout;
-                    dialogTimer.Elapsed += new ElapsedEventHandler(Dialog_Timer_Elapsed);
-                    dialogTimer.Start();
-                }
+        void CancelTransactionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DialogTimerDispose();
+
+            CancelTransactionSelected = true;
+            ButtonPressed = CancelTransactionBtn;
+
+            this.Dispatcher.Invoke((Action)delegate ()
+            {
+                SetAllButtonsEnabledState(false);
+                this.Close();
+            });
+        }
+
+        void ProcessRequestBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DialogTimerDispose();
+
+            ProcessRequestSelected = true;
+            ButtonPressed = ProcessRequestBtn;
+
+            this.Dispatcher.Invoke((Action)delegate ()
+            {
+                SetAllButtonsEnabledState(false);
+                this.Close();
+            });
+        }
+
+        void PrintReceiptBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DialogTimerDispose();
+
+            PrintReceiptSelected = true;
+            ButtonPressed = PrintReceiptBtn;
+
+            this.Dispatcher.Invoke((Action)delegate ()
+            {
+                SetAllButtonsEnabledState(false);
+                this.Close();
+            });
+        }
+        void VoidPaymentBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DialogTimerDispose();
+
+            VoidPaymentSelected = true;
+            ButtonPressed = VoidPaymentBtn;
+
+            this.Dispatcher.Invoke((Action)delegate ()
+            {
+                SetAllButtonsEnabledState(false);
+                this.Close();
+            });
+        }
+
+        public void SetDialogTimer()
+        {
+            DialogTimerDispose();
+
+            bool setDialogTimer = (bool)this.DataContext.GetType().GetProperty("ButtonTxt").GetValue(this.DataContext, null).ToString().Equals("Cancel Payment", StringComparison.OrdinalIgnoreCase);
+            displayTimeout = (int)this.DataContext.GetType().GetProperty("Timeout").GetValue(this.DataContext, null);
+
+            if (setDialogTimer && displayTimeout > 0)
+            {
+                dialogTimer = new Timer();
+                dialogTimer.Interval = displayTimeout;
+                dialogTimer.Elapsed += new ElapsedEventHandler(Dialog_Timer_Elapsed);
+                dialogTimer.Start();
             }
         }
 
-        private void Dialog_Timer_Elapsed(object sender, ElapsedEventArgs e)
+        public void SetAllButtonsEnabledState(bool state)
         {
-            dialogTimer?.Stop();
-            dialogTimer?.Dispose();
-
-            this.Dispatcher.Invoke((Action)delegate ()
-            {
-                this.Close();
-            });
-        }
-
-        private void ManualEntryBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ManualEntrySelected = true;
-            dialogTimer?.Stop();
-            dialogTimer?.Dispose();
-
-            this.Dispatcher.Invoke((Action)delegate ()
-            {
-                //this.ManualEntryBtn.IsEnabled = false;
-                this.CancelTransactionBtn.IsEnabled = false;
-                this.Close();
-            });
-        }
-
-        private void CancelTransactionBtn_Click(object sender, RoutedEventArgs e)
-        {
-            PaymentCancelled = true;
-            dialogTimer?.Stop();
-            dialogTimer?.Dispose();
-
-            this.Dispatcher.Invoke((Action)delegate ()
-            {
-                //this.ManualEntryBtn.IsEnabled = false;
-                this.CancelTransactionBtn.IsEnabled = false;
-                this.Close();
-            });
+            this.CancelTransactionBtn.IsEnabled = state;
+            this.ProcessRequestBtn.IsEnabled = state;
+            this.PrintReceiptBtn.IsEnabled = state;
+            this.VoidPaymentBtn.IsEnabled = state;
         }
     }
 }

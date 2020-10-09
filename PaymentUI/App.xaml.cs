@@ -1,7 +1,9 @@
-﻿using PaymentUI.Models;
+﻿using PaymentUI.Helpers;
+using PaymentUI.Models;
 using PaymentUI.ViewModels;
 using PaymentUI.Views;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -34,8 +36,13 @@ namespace PaymentUI
             // Payment View
             PaymentView = new UIPaymentView();
 
+            SetStartupTimer(500);
+        }
+
+        private void SetStartupTimer(int timeout)
+        {
             appStartupTimer = new Timer();
-            appStartupTimer.Interval = 500;
+            appStartupTimer.Interval = timeout;
             appStartupTimer.Elapsed += new ElapsedEventHandler(Startup_Timer_Elapsed);
             appStartupTimer.Start();
         }
@@ -44,6 +51,7 @@ namespace PaymentUI
         {
             appStartupTimer?.Stop();
             appStartupTimer?.Dispose();
+            appStartupTimer = null;
 
             this.Dispatcher.Invoke((Action)delegate ()
             {
@@ -80,10 +88,9 @@ namespace PaymentUI
                 cancellationTokenSource = new CancellationTokenSource();
 
                 _ = Task.Run(async () => { await Task.Delay(1); })
-                .ContinueWith(async antecedent =>
+                .ContinueWith(antecedent =>
                 {
-                    //await TransactionScreen(e);
-                    await PaymentScreen(e);
+                    PaymentScreen(e);
                 }, cancellationTokenSource.Token, TaskContinuationOptions.None, syncContextScheduler);
             }
             catch (Exception ex)
@@ -123,7 +130,7 @@ namespace PaymentUI
             //await brokerConnector.PublishAsync(jsonToPublish, commHeader, ServiceType.Servicer);
         }
 
-        private async Task PaymentScreen(PaymentActionEventArgs e)
+        private void PaymentScreen(PaymentActionEventArgs e)
         {
             bool isManualEntry = ShowManualEntryButton(e);
             PaymentView.DataContext = new UIViewModel(e, isManualEntry);
@@ -131,8 +138,13 @@ namespace PaymentUI
             PaymentView.Closing += TransactionView_Closing;
             PaymentView.CancelTransactionBtn.IsEnabled = true;
 
-            await Task.Delay(1);
-            PaymentView.ShowDialog();
+            PaymentView.SetDialogTimer();
+            PaymentView.SetAllButtonsEnabledState(true);
+
+            if (PaymentView.Visibility != Visibility.Visible)
+            {
+                PaymentView.ShowDialog();
+            }
         }
 
         private async Task TransactionScreen(PaymentActionEventArgs e)
@@ -162,27 +174,33 @@ namespace PaymentUI
 
         private void TransactionView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = true;
+            if (!e.Cancel)
+            {
+                e.Cancel = true;
 
-            //bool windowClose = TransactionView.CancelTransactionBtn.Content.ToString().Equals("Close", StringComparison.OrdinalIgnoreCase);
+                System.Windows.Controls.TextBlock message = TreeViewHelper.GetChildOfType<System.Windows.Controls.TextBlock>(PaymentView.ButtonPressed);
+                Debug.WriteLine($"BUTTON ACTION='{message.Text}'");
 
-            //if (windowClose)
-            //{
-            //    TransactionView.Topmost = false;
-            //    TransactionView.Hide();
-            //}
-            //else if (TransactionView.ManualEntrySelected)
-            //{
-            //    _ = ProcessManualPayment(PaymentActionEventArgs);
-            //}
-            //else if (TransactionView.PaymentCancelled)
-            //{
-            //    if (TransactionView.CancelTransactionBtn.Content.ToString().Equals("Cancel", StringComparison.OrdinalIgnoreCase))
-            //    {
-            //        _ = SetCancelationResponse(PaymentActionEventArgs.LinkRequest);
-            //    }
-            //}
+                if (TransactionView.PaymentCancelled)
+                {
+                    TransactionView.Topmost = false;
+                    TransactionView.Visibility = Visibility.Hidden;
+                    //TransactionView.Hide();
+                }
+                //else if (TransactionView.ManualEntrySelected)
+                //{
+                //    _ = ProcessManualPayment(PaymentActionEventArgs);
+                //}
+                //else if (TransactionView.PaymentCancelled)
+                //{
+                //    if (TransactionView.CancelTransactionBtn.Content.ToString().Equals("Cancel", StringComparison.OrdinalIgnoreCase))
+                //    {
+                //        _ = SetCancelationResponse(PaymentActionEventArgs.LinkRequest);
+                //    }
+                //}
+
+                SetStartupTimer(500);
+            }
         }
-
     }
 }

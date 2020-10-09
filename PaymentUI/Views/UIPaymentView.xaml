@@ -58,34 +58,35 @@
                 <Label Grid.Row="3" Grid.Column="0" Content="CustID" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="0,5,0,0" FontSize="14" FontWeight="Bold" Height="60" />
                 <Border Grid.Row="3" Grid.Column="1"  BorderThickness="1" BorderBrush="SkyBlue" Margin="0,5">
                     <TextBlock x:Name="CustId" Width="400" Background="White"></TextBlock>
-                </Border>            </Grid>
+                </Border>            
+            </Grid>
         </StackPanel>
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" Background="LightGray" Width="760">
             <Button Name="CancelTransactionBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,100,0" VerticalAlignment="Center" Width="160" Background="Red" Foreground="White" Click="CancelTransactionBtn_Click">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="TimesCircle" Foreground="White" Margin="0,0,10,0"/>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Cancel Payment</TextBlock>
+                    <TextBlock Text="Cancel Transaction" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="ProcessRequestBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,10,0" VerticalAlignment="Center" Width="160" Background="DarkCyan" Foreground="White" Click="ManualEntryBtn_Click">
+            <Button x:Name="ProcessRequestBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,10,0" VerticalAlignment="Center" Width="160" Background="DarkCyan" Foreground="White" Click="ProcessRequestBtn_Click">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="CartArrowDown" Foreground="White" Margin="0,0,10,0"/>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Process Request</TextBlock>
+                    <TextBlock Text="Process Request" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
         </StackPanel>
         <Label Content="Payment History" Grid.Row="3" Grid.ColumnSpan="2" Background="#FFB8B8B8" Width="760" Foreground="White" FontSize="20" HorizontalContentAlignment ="Center" VerticalAlignment="Center"/>
         <StackPanel Grid.Row="4" HorizontalAlignment="Center" Orientation="Horizontal" Background="LightGray" Width="760">
-            <Button Name="PrintReceiptBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,100,0" VerticalAlignment="Center" Width="160" Background="Navy" Foreground="White" Click="CancelTransactionBtn_Click">
+            <Button Name="PrintReceiptBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,100,0" VerticalAlignment="Center" Width="160" Background="Navy" Foreground="White" Click="PrintReceiptBtn_Click">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Print" Foreground="White" Margin="0,0,10,0"/>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Print Receipt</TextBlock>
+                    <TextBlock Text="Print Receipt" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="VoidPaymentBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,10,0" VerticalAlignment="Center" Width="160" Background="Navy" Foreground="White" Click="ManualEntryBtn_Click">
+            <Button x:Name="VoidPaymentBtn" HorizontalAlignment="Left" Height="30" Margin="110,0,10,0" VerticalAlignment="Center" Width="160" Background="Navy" Foreground="White" Click="VoidPaymentBtn_Click">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="AngleDoubleUp" Foreground="White" Margin="0,0,10,0"/>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Void Payment</TextBlock>
+                    <TextBlock Text="Void Payment" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
         </StackPanel>
